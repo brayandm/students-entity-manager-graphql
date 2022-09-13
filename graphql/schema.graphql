@@ -1,11 +1,8 @@
-
-
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
-
 
 type Query {
 
@@ -17,22 +14,22 @@ type Query {
 type Mutation {
 
     addStudent(
-        firstname: String!,
-        lastname: String!,
-        email: String!,
-        birthdate: Date!,
-        address: String!,
-        score: Float!
+        firstname: String! @rules(apply: ["max:120"]),
+        lastname: String! @rules(apply: ["max:120"]),
+        email: String! @rules(apply: ["email", "max:120"]),
+        birthdate: Date! @rules(apply: ["date"]),
+        address: String! @rules(apply: ["max:255"]),
+        score: Float! @rules(apply: ["numeric", "between:0,999999"])
         ): Student! @create
 
     updateStudent(
         id: ID!
-        firstname: String!,
-        lastname: String!,
-        email: String!,
-        birthdate: Date!,
-        address: String!,
-        score: Float!
+        firstname: String! @rules(apply: ["max:120"]),
+        lastname: String! @rules(apply: ["max:120"]),
+        email: String! @rules(apply: ["email", "max:120"]),
+        birthdate: Date! @rules(apply: ["date"]),
+        address: String! @rules(apply: ["max:255"]),
+        score: Float! @rules(apply: ["numeric", "between:0,999999"])
         ): Student! @update
 
     deleteStudent(id: ID!): Student @delete
