@@ -4,46 +4,14 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-type Query {
-
-    getStudents: [Student!]! @all
-
-    getStudent(id: ID! @eq): Student @find
+type Query{
+    me: User
 }
 
-type Mutation {
-
-    addStudent(
-        firstname: String! @rules(apply: ["max:120"]),
-        lastname: String! @rules(apply: ["max:120"]),
-        email: String! @rules(apply: ["email", "max:120"]),
-        birthdate: Date! @rules(apply: ["date"]),
-        address: String! @rules(apply: ["max:255"]),
-        score: Float! @rules(apply: ["numeric", "between:0,999999"])
-        ): Student! @create
-
-    updateStudent(
-        id: ID!
-        firstname: String! @rules(apply: ["max:120"]),
-        lastname: String! @rules(apply: ["max:120"]),
-        email: String! @rules(apply: ["email", "max:120"]),
-        birthdate: Date! @rules(apply: ["date"]),
-        address: String! @rules(apply: ["max:255"]),
-        score: Float! @rules(apply: ["numeric", "between:0,999999"])
-        ): Student! @update
-
-    deleteStudent(id: ID!): Student @delete
+type Mutation{
+    me: User
 }
 
-type Student {
-
-    id: ID!
-    firstname: String
-    lastname: String
-    email: String
-    birthdate: Date
-    address: String
-    score: Float
-    created_at: DateTime!
-    updated_at: DateTime!
-}
+#import queries/*.graphql
+#import mutations/*.graphql
+#import types/*.graphql

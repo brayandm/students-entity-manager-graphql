@@ -1,0 +1,6 @@
+extend type Query {
+
+    getStudents: [Student!]! @all
+
+    getStudent(id: ID! @eq): Student @find
+}

@@ -1,0 +1,12 @@
+type Student {
+
+    id: ID!
+    firstname: String
+    lastname: String
+    email: String
+    birthdate: Date
+    address: String
+    score: Float
+    created_at: DateTime!
+    updated_at: DateTime!
+}
