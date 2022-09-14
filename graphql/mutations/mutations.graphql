@@ -1,4 +1,4 @@
-extend type Mutation {
+extend type Mutation @guard{
 
     addStudent(
         firstname: String! @rules(apply: ["max:120"]),

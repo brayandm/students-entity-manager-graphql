@@ -1,4 +1,4 @@
-extend type Query {
+extend type Query @guard{
 
     getStudents: [Student!]! @all
 
