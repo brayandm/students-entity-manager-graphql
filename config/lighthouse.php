@@ -28,9 +28,7 @@ return [
          * make sure to return spec-compliant responses in case an error is thrown.
          */
         'middleware' => [
-            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
-
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class
         ],
 
         /*
