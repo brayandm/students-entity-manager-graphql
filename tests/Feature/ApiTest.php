@@ -109,4 +109,125 @@ class ApiTest extends TestCase
 
         $response->assertJsonPath('errors.0.message', 'Unauthenticated.');
     }
+
+    public function test_get_student_by_id()
+    {
+        //Filling database
+
+        Student::factory(10)->create();
+
+        //Register
+
+        $response = $this->register();
+
+        //Get token
+
+        $token = $response['access_token'];
+
+        //Getting students
+
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            {
+                getStudents {
+                    firstname
+                }
+            }
+            ', [], [], ['Authorization' => 'Bearer ' . $token]);
+
+        $response->assertStatus(200);
+
+        $this->assertEquals(10, count($response['data']['getStudents']));
+
+        //Getting students by id
+
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            {
+                getStudent(id: 1) {
+                    id
+                    firstname
+                    lastname
+                    email
+                    birthdate
+                    address
+                    score
+                    created_at
+                    updated_at
+                }
+            }
+            ', [], [], ['Authorization' => 'Bearer ' . $token]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'getStudent' =>
+                    ['id',
+                    'firstname',
+                    'lastname',
+                    'email',
+                    'birthdate',
+                    'address',
+                    'score',
+                    'created_at',
+                    'updated_at']]
+        ]);
+    }
+
+    public function test_delete_students()
+    {
+        //Filling database
+
+        Student::factory(10)->create();
+
+        //Register
+
+        $response = $this->register();
+
+        //Get token
+
+        $token = $response['access_token'];
+
+        //Getting students
+
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            {
+                getStudents {
+                    firstname
+                }
+            }
+            ', [], [], ['Authorization' => 'Bearer ' . $token]);
+
+        $response->assertStatus(200);
+
+        $this->assertEquals(10, count($response['data']['getStudents']));
+
+        //Deleting students
+
+        for ($i = 1; $i <=10; $i++)
+        {
+            $response = $this->graphQL(/** @lang GraphQL */ '
+                mutation ($id: ID!){
+                    deleteStudent(id: $id) {
+                        id
+                    }
+                }
+                ', ['id' => $i], [], ['Authorization' => 'Bearer ' . $token]);
+
+            $response->assertStatus(200);
+        }
+
+        //Counting students
+
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            {
+                getStudents {
+                    firstname
+                }
+            }
+            ', [], [], ['Authorization' => 'Bearer ' . $token]);
+
+        $response->assertStatus(200);
+
+        $this->assertEquals(0, count($response['data']['getStudents']));
+    }
 }
