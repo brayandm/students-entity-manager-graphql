@@ -179,6 +179,8 @@ class ApiTest extends TestCase
                     'created_at',
                     'updated_at']]
         ]);
+
+        $response->assertJsonPath('data.getStudent.id', '1');
     }
 
     public function test_delete_students()
@@ -230,6 +232,8 @@ class ApiTest extends TestCase
             $response->assertJsonStructure([
                 'data' => ['deleteStudent']
             ]);
+
+            $response->assertJsonPath('data.deleteStudent.id', $i.'');
         }
 
         //Counting students
